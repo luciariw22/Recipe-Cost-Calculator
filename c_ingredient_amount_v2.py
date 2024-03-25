@@ -35,7 +35,7 @@ def measurement():
 
         elif response[-2] == "kg":
             measurement_type = "kg"
-            amount = response[:-2]
+            amount = response[:-1]
 
         else:
             measurement_type = "unknown"
@@ -66,6 +66,8 @@ def measurement():
                 measurement_type = ""
         # Return the amount for the recipe
         if measurement_type == "g":
+            return amount
+        if measurement_type == "kg":
             return amount
 
 
