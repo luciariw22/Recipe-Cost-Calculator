@@ -1,73 +1,74 @@
-# Functions go here
 
-# yes / no checker
 def yes_no(question):
     to_check = ["yes", "no"]
+
     valid = False
     while not valid:
+
         response = input(question).lower()
+
         for var_item in to_check:
             if response == var_item:
                 return response
             elif response == var_item[0]:
                 return var_item
+
         print("Please enter either yes or no...\n")
 
 
-# ingredient name fot testing
-ingredient_name = ['eggs']
-
-
-# gets measurements for ingredient
 def measurement():
-    # Initialize variables and error message
+    # error message
     error = "Please enter a valid measurement\n"
     valid = False
 
     while not valid:
         # Ask for the amount needed for the recipe
-        response = input("Amount needed for recipe? (e.g., kg, g, ml, or no unit for whole ingredients) ")
+        response = input("Amount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                         "enter number with no unit): ").strip().lower()
 
         # Check the measurement
-        if response[-1] == "g":
-            measurement_type = "g"
-            amount = response[:-1]
+        if response.endswith('kg'):
+            print("Amount:", response)
+            unit_type = "kg"
 
-        elif response[-2] == "kg":
-            measurement_type = "kg"
-            amount = response[:-1]
+        elif response.endswith('g'):
+            print("Amount:", response)
+            unit_type = "g"
 
+        elif response.endswith('ml'):
+            print("Amount:", response)
+            unit_type = "ml"
+
+        elif response == "":
+            unit_type = "unknown"
+        # asks question again if response invalid
         else:
-            measurement_type = "unknown"
-            amount = response
+            print(error)
+            continue
 
         try:
+            # Convert the amount to float
+            amount = float(response[:-2])
             # Check if the amount is more than zero
-            amount = float(amount)
             if amount <= 0:
                 print(error)
-                continue
+                continue  # Added to restart the loop if the amount is not positive
+            else:
+                valid = True
         except ValueError:
             print(error)
             continue
 
-        if measurement_type == "unknown" and amount > 10:
-            grams_type = yes_no("Do you mean {:.0f}g, i.e., {:.0f} grams? "
-                                "y / n ".format(amount, amount))
+        if unit_type == "unknown" and amount < 10:
+            no_unit = yes_no("Do you mean {:.0f}? (please enter y / n). ").format(amount)
             # Set measurement type based on user answer
-            if grams_type == "yes":
-                measurement_type = "g"
-            else:
+            if no_unit == "yes":
                 measurement_type = ""
-        elif measurement_type == "unknown" and amount < 10:
-            ingredient_type = yes_no("Do you mean {:.0f}, {}? "
-                                     "y / n".format(amount, ingredient_name[0]))
-            if ingredient_type == "yes":
-                measurement_type = ""
+
         # Return the amount for the recipe
-        if measurement_type == "g":
+        if unit_type == "g":
             return amount
-        if measurement_type == "kg":
+        if unit_type == "kg":
             return amount
 
 
@@ -75,5 +76,4 @@ def measurement():
 
 
 # Call the measurement function
-ingredient_amount = measurement()
-print("Amount entered:", ingredient_amount)
+measurement()
