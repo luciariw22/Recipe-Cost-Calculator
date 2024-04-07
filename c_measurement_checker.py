@@ -14,10 +14,6 @@ def yes_no(question):
         print("Please enter either yes or no...\n")
 
 
-# ingredient name for testing
-ingredient_name = ['eggs']
-
-
 # gets measurements for ingredient
 def measurement():
     # Initialize variables and error message
@@ -57,10 +53,7 @@ def measurement():
             else:
                 measurement_type = ""
         elif measurement_type == "unknown" and amount < 10:
-            ingredient_type = yes_no("Do you mean {:.0f}, {}? "
-                                     "y / n".format(amount, ingredient_name[0]))
-            if ingredient_type == "yes":
-                measurement_type = ""
+            print(error)
         # Return the amount for the recipe
         if measurement_type == "g":
             return amount

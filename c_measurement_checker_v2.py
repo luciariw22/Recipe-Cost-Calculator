@@ -1,4 +1,3 @@
-
 def yes_no(question):
     to_check = ["yes", "no"]
 
@@ -19,12 +18,14 @@ def yes_no(question):
 def measurement():
     # error message
     error = "Please enter a valid measurement\n"
-    valid = False
 
-    while not valid:
+    while True:
         # Ask for the amount needed for the recipe
         response = input("Amount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
                          "enter number with no unit): ").strip().lower()
+
+        if response == "xxx":
+            break
 
         # Check the measurement
         if response.endswith('kg'):
@@ -39,7 +40,7 @@ def measurement():
             print("Amount:", response)
             unit_type = "ml"
 
-        elif response.endswith():
+        elif response:
             unit_type = "unknown"
         # asks question again if response invalid
         else:
@@ -60,10 +61,7 @@ def measurement():
             continue
 
         if unit_type == "unknown" and amount < 10:
-            no_unit = yes_no("Do you mean {:.0f}? (please enter y / n). ").format(amount)
-            # Set measurement type based on user answer
-            if no_unit == "yes":
-                unit_type = ""
+            print(error)
 
         # Return the amount for the recipe
         if unit_type == "g":

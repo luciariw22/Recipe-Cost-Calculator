@@ -28,9 +28,13 @@ def measurement():
             unit_type = "kg"
 
         elif response.endswith('g'):
-            if len(response) == 2 and response[:-1].isdigit():
+            # Check if the substring before 'g' is numeric
+            if response[:-1].isdigit():
                 print("Amount:", response)
                 unit_type = "g"
+            else:
+                print(error)
+                continue
 
         elif response.endswith('ml'):
             print("Amount:", response)
@@ -48,7 +52,7 @@ def measurement():
                 amount = float(response)
 
             if amount <= 0:
-                print("Please enter a valid positive amount")
+                print("Please enter a valid amount")
                 continue
             else:
                 valid = True
@@ -57,7 +61,7 @@ def measurement():
             continue
 
         if unit_type == response:
-            # If no unit is specified, return the amount directly
+            # If no unit is entered, return the amount directly
             return amount
 
         if unit_type == "g" or unit_type == "kg" or unit_type == "ml":
@@ -68,3 +72,4 @@ def measurement():
 
 ingredient_amount = measurement()
 print("Ingredient amount:", ingredient_amount)
+
