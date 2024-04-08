@@ -16,58 +16,66 @@ def yes_no(question):
 
 
 def measurement():
-    # error message
     error = "Please enter a valid measurement\n"
+    valid = False
 
-    while True:
-        ingredient_name = input("Enter ingredient name or 'xxx' to exit: ").strip().lower()
-        if ingredient_name == "xxx":
+    while not valid:
+        response = input("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                         "enter number with no unit): ").strip().lower()
+        if response == "xxx":
             return None
 
-        while True:
-            # Ask for the amount needed for the recipe
-            response = input(f"Amount of {ingredient_name}?: (e.g., 2kg, 200g, 20mL, "
-                             "or enter 'xxx' to finish): ").strip().lower()
+        if response.endswith('kg'):
+            print("Amount:", response)
+            unit_type = "kg"
 
-            if response == "xxx":
-                return None
-
-            # Check the measurement
-            if response.endswith('kg'):
-                print("Amount:", response)
-                unit_type = "kg"
-
-            elif response.endswith('g'):
+        elif response.endswith('g'):
+            # Check if the substring before 'g' is numeric
+            if response[:-1].isdigit():
                 print("Amount:", response)
                 unit_type = "g"
-
-            elif response.endswith('ml'):
-                print("Amount:", response)
-                unit_type = "ml"
-
-            elif response:
-                unit_type = "unknown"
-            # asks question again if response invalid
             else:
                 print(error)
                 continue
 
-            try:
-                # Convert the amount to float
+        elif response.endswith('ml'):
+            print("Amount:", response)
+            unit_type = "ml"
+
+        else:
+            unit_type = response
+
+        try:
+            if unit_type == "g":
+                amount = float(response[:-1])
+            elif unit_type == "kg" or unit_type == "ml":
                 amount = float(response[:-2])
-                # Check if the amount is more than zero
-                if amount <= 0:
-                    print(error)
-                    continue  # Added to restart the loop if the amount is not positive
-                else:
-                    break
-            except ValueError:
-                print(error)
+            else:
+                amount = float(response)
+
+            if amount <= 0:
+                print("Please enter a valid amount")
                 continue
+            else:
+                valid = True
+        except ValueError:
+            print(error)
+            continue
 
-            if unit_type == "unknown" and amount < 10:
-                print(error)
+        if unit_type == response:
+            # If no unit is entered, return the amount directly
+            return amount
+
+        if unit_type == "g" or unit_type == "kg" or unit_type == "ml":
+            return amount
 
 
-# Call the measurement function
-measurement()
+# Main routine goes here
+
+while True:
+    ingredient_amount = measurement()
+    if ingredient_amount is None:
+        break
+    print("Ingredient amount:", ingredient_amount)
+
+

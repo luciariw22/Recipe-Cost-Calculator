@@ -58,49 +58,57 @@ def not_blank(question, error):
         return response
 
 
-# geta measurements for ingredient
+# gets ingredient amounts and measurements
 def measurement():
-    # Initialize variables and error message
     error = "Please enter a valid measurement\n"
     valid = False
 
     while not valid:
-        # Ask for the amount needed for the recipe
-        response = input("Amount needed for recipe? (e.g., 500g or 5) ")
+        response = input("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                         "enter number with no unit): ").strip().lower()
 
-        # Check if the measurement is in grams
-        if response[-1] == "g":
-            measurement_type = "g"
-            amount = response[:-1]
-        else:
-            measurement_type = "unknown"
-            amount = response
+        if response.endswith('kg'):
+            print("Amount:", response)
+            unit_type = "kg"
 
-        try:
-            # Check if the amount is more than zero
-            amount = float(amount)
-            if amount <= 0:
+        elif response.endswith('g'):
+            # Check if the substring before 'g' is numeric
+            if response[:-1].isdigit():
+                print("Amount:", response)
+                unit_type = "g"
+            else:
                 print(error)
                 continue
+
+        elif response.endswith('ml'):
+            print("Amount:", response)
+            unit_type = "ml"
+
+        else:
+            unit_type = response
+
+        try:
+            if unit_type == "g":
+                amount = float(response[:-1])
+            elif unit_type == "kg" or unit_type == "ml":
+                amount = float(response[:-2])
+            else:
+                amount = float(response)
+
+            if amount <= 0:
+                print("Please enter a valid amount")
+                continue
+            else:
+                valid = True
         except ValueError:
             print(error)
             continue
 
-        if measurement_type == "unknown" and amount > 10:
-            grams_type = yes_no("Do you mean {:.0f}g, i.e., {:.0f} grams? "
-                                "y / n ".format(amount, amount))
-            # Set measurement type based on user answer
-            if grams_type == "yes":
-                measurement_type = "g"
-            else:
-                measurement_type = ""
-        elif measurement_type == "unknown" and amount < 10:
-            ingredient_type = yes_no("Do you mean {:.0f}, {}? "
-                                     "y / n".format(amount, ingredient_name[0]))
-            if ingredient_type == "yes":
-                measurement_type = ""
-        # Return the amount for the recipe
-        if measurement_type == "g":
+        if unit_type == response:
+            # If no unit is entered, return the amount directly
+            return amount
+
+        if unit_type == "g" or unit_type == "kg" or unit_type == "ml":
             return amount
 
 
@@ -113,15 +121,12 @@ if want_instructions == "yes":
     instructions()
 
 product_name = not_blank("Recipe name: ", "The product name can't be blank. ")
+serving_size = not_blank, num_check("Serving Size: ", "The serving size can't be blank "
+                                                      "and must be an integer", int)
 
 while True:
-    ingredient_name = not_blank("Ingredient: ", "The ingredient name can't be blank. ")
-    ingredient_amount = measurement()
-    print("Amount entered:", ingredient_amount)
-
+    ingredient_name = not_blank("\nIngredient: ", "The ingredient name can't be blank. ")
     if ingredient_name == "xxx":
         break
-
-# Call the measurement function
-ingredient_amount = measurement()
-print("Amount entered:", ingredient_amount)
+    ingredient_amount = measurement()
+    print("Amount entered:", ingredient_amount)
