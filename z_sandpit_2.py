@@ -20,8 +20,10 @@ def measurement():
     valid = False
 
     while not valid:
-        response = input("Amount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+        response = input("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
                          "enter number with no unit): ").strip().lower()
+        if response == "xxx":
+            return None
 
         if response.endswith('kg'):
             print("Amount:", response)
@@ -70,6 +72,11 @@ def measurement():
 
 # Main routine goes here
 
-ingredient_amount = measurement()
-print("Ingredient amount:", ingredient_amount)
+while True:
+    ingredient_amount = measurement()
+    if ingredient_amount is None:
+        break
+    print("Ingredient amount:", ingredient_amount)
+
+
 
