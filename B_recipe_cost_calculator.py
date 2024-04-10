@@ -125,7 +125,7 @@ serving_size = not_blank, num_check("Serving Size: ", "The serving size can't be
                                                       "and must be an integer", int)
 
 while True:
-    ingredient_name = not_blank("\nIngredient: ", "The ingredient name can't be blank. ")
+    ingredient_name = not_blank("\nIngredient: (or enter 'xxx' to when done) ", "The ingredient name can't be blank ")
     if ingredient_name == "xxx":
         break
     ingredient_amount = measurement()
