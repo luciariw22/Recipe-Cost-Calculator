@@ -130,3 +130,6 @@ while True:
         break
     ingredient_amount = measurement()
     print("Amount entered:", ingredient_amount)
+
+if ingredient_name == "xxx":
+    print("You entered {number of ingredients}")
