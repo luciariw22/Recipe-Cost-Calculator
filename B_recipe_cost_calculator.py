@@ -129,12 +129,10 @@ while True:
     ingredient_name = not_blank("\nIngredient: (or enter 'xxx' to when done) ", "The ingredient name can't be blank ")
     if ingredient_name == "xxx":
         break
-    ingredient_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+    packaged_amount = measurement("\nAmount ingredient is bought in?: (e.g., 2kg, 200g, 20mL, or "
+                                  "enter number with no unit): ")
+
+    ingredient_amount = measurement("\nAmount of ingredient needed for recipe?: (e.g., 2kg, 200g, 20mL, or "
                                     "enter number with no unit): ")
 
     print("Amount entered:", ingredient_amount)
-
-
-
-
-
