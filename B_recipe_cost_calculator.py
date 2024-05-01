@@ -59,13 +59,14 @@ def not_blank(question, error):
 
 
 # gets ingredient amounts and measurements
-def measurement():
+def measurement(question):
     error = "Please enter a valid measurement\n"
     valid = False
 
     while not valid:
-        response = input("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
-                         "enter number with no unit): ").strip().lower()
+        response = input(question).lower()
+        if response == "xxx":
+            return None
 
         if response.endswith('kg'):
             print("Amount:", response)
@@ -128,8 +129,12 @@ while True:
     ingredient_name = not_blank("\nIngredient: (or enter 'xxx' to when done) ", "The ingredient name can't be blank ")
     if ingredient_name == "xxx":
         break
-    ingredient_amount = measurement()
+    ingredient_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                                    "enter number with no unit): ")
+
     print("Amount entered:", ingredient_amount)
 
-if ingredient_name == "xxx":
-    print("You entered {number of ingredients}")
+
+
+
+
