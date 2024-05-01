@@ -15,13 +15,12 @@ def yes_no(question):
         print("Please enter either yes or no...\n")
 
 
-def measurement():
+def measurement(question):
     error = "Please enter a valid measurement\n"
     valid = False
 
     while not valid:
-        response = input("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
-                         "enter number with no unit): ").strip().lower()
+        response = input(question).lower()
         if response == "xxx":
             return None
 
@@ -73,9 +72,8 @@ def measurement():
 # Main routine goes here
 
 while True:
-    ingredient_amount = measurement()
+    ingredient_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                                    "enter number with no unit): ")
     if ingredient_amount is None:
         break
     print("Ingredient amount:", ingredient_amount)
-
-
