@@ -132,7 +132,9 @@ while True:
     packaged_amount = measurement("\nAmount ingredient is bought in?: (e.g., 2kg, 200g, 20mL, or "
                                   "enter number with no unit): ")
 
+    print("Packaged amount:", packaged_amount)
+
     ingredient_amount = measurement("\nAmount of ingredient needed for recipe?: (e.g., 2kg, 200g, 20mL, or "
                                     "enter number with no unit): ")
 
-    print("Amount entered:", ingredient_amount)
+    print("Ingredient amount:", ingredient_amount)
