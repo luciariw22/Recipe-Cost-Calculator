@@ -159,5 +159,7 @@ variable_sub = variable_expenses[1]
 # *** Printing Area ***
 
 print()
+product_heading = "**** Recipe -- {} -- ****".format(product_name)
+print()
 print(variable_frame)
 print()
