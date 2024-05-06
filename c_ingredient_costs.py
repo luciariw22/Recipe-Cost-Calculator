@@ -94,13 +94,14 @@ def currency(x):
 # the data frame and subtotal
 def get_expenses(var_fixed):
     # Set up dictionaries and lists
-
     item_list = []
+    store_amount_list = []
     amount_list = []
     price_list = []
 
     variable_dict = {
         "Item": item_list,
+        "Store Amount": store_amount_list,
         "Amount": amount_list,
         "Price": price_list
     }
@@ -110,31 +111,33 @@ def get_expenses(var_fixed):
     while item_name.lower() != "xxx":
 
         print()
-        # get name, amount and item
+        # get name, store amount, amount, and price
         item_name = not_blank("Item name: ",
                               "The component name can't be "
                               "blank.")
         if item_name.lower() == "xxx":
             break
 
-        amount = measurement("Amount:")
+        store_amount = measurement("Amount ingredient is bought in store?: ")
+        store_amount_list.append(store_amount)
+
+        amount = measurement("Amount: ")
+        amount_list.append(amount)
 
         price = num_check("How much for a single item? $",
                           "The price must be a number <more "
                           "than 0>",
                           float)
-
-        # add item, amount, and price to lists
-        item_list.append(item_name)
-        amount_list.append(amount)
         price_list.append(price)
+
+        # add item to lists
+        item_list.append(item_name)
 
     expense_frame = pandas.DataFrame(variable_dict)
     expense_frame = expense_frame.set_index('Item')
 
     # Calculate cost of each component
-    expense_frame['Cost'] = expense_frame['Amount'] \
-                             * expense_frame['Price']
+    expense_frame['Cost'] = expense_frame['Amount'] * expense_frame['Price']
 
     # Find sub-total
     sub_total = expense_frame['Cost'].sum()
@@ -160,6 +163,8 @@ variable_sub = variable_expenses[1]
 
 print()
 product_heading = "**** Recipe -- {} -- ****".format(product_name)
+print(product_heading)
 print()
 print(variable_frame)
 print()
+
