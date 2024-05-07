@@ -102,7 +102,7 @@ def get_expenses(var_fixed):
     variable_dict = {
         "Item": item_list,
         "Store Amount": store_amount_list,
-        "Amount": amount_list,
+        "Recipe Amount": amount_list,  # Updated key name
         "Price": price_list
     }
 
@@ -121,7 +121,7 @@ def get_expenses(var_fixed):
         store_amount = measurement("Amount ingredient is bought in store?: ")
         store_amount_list.append(store_amount)
 
-        amount = measurement("Amount: ")
+        amount = measurement("Recipe Amount: ")
         amount_list.append(amount)
 
         price = num_check("How much for a single item? $",
@@ -137,7 +137,7 @@ def get_expenses(var_fixed):
     expense_frame = expense_frame.set_index('Item')
 
     # Calculate cost of each component
-    expense_frame['Cost'] = expense_frame['Amount'] * expense_frame['Price']
+    expense_frame['Cost'] = expense_frame['Recipe Amount'] * expense_frame['Price']
 
     # Find sub-total
     sub_total = expense_frame['Cost'].sum()
@@ -153,7 +153,7 @@ def get_expenses(var_fixed):
 # *** Main Routine starts here ***
 
 # Get product name
-product_name = not_blank("Product name: ", "The product name can't be blank. ")
+recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank. ")
 
 variable_expenses = get_expenses("variable")
 variable_frame = variable_expenses[0]
@@ -162,9 +162,8 @@ variable_sub = variable_expenses[1]
 # *** Printing Area ***
 
 print()
-product_heading = "**** Recipe -- {} -- ****".format(product_name)
-print(product_heading)
+recipe_heading = "**** Recipe -- {} -- ****".format(recipe_name)
+print(recipe_heading)
 print()
 print(variable_frame)
 print()
-
