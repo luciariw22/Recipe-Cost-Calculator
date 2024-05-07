@@ -94,31 +94,31 @@ def currency(x):
 # the data frame and subtotal
 def get_expenses(var_fixed):
     # Set up dictionaries and lists
-    item_list = []
+    ingredient_list = []
     store_amount_list = []
     amount_list = []
     price_list = []
 
     variable_dict = {
-        "Item": item_list,
+        "Ingredient": ingredient_list,
         "Store Amount": store_amount_list,
-        "Recipe Amount": amount_list,  # Updated key name
+        "Recipe Amount": amount_list,
         "Price": price_list
     }
 
-    # loop to get component, amount and price
-    item_name = ""
-    while item_name.lower() != "xxx":
+    # loop to get ingredient, amount, and price
+    ingredient_name = ""
+    while ingredient_name.lower() != "xxx":
 
         print()
         # get name, store amount, amount, and price
-        item_name = not_blank("Item name: ",
-                              "The component name can't be "
-                              "blank.")
-        if item_name.lower() == "xxx":
+        ingredient_name = not_blank("Ingredient name: ",
+                                    "The ingredient name can't be "
+                                    "blank.")
+        if ingredient_name.lower() == "xxx":
             break
 
-        store_amount = measurement("Amount ingredient is bought in store?: ")
+        store_amount = measurement("Amount ingredient is bought in from store?: ")
         store_amount_list.append(store_amount)
 
         amount = measurement("Recipe Amount: ")
@@ -131,10 +131,10 @@ def get_expenses(var_fixed):
         price_list.append(price)
 
         # add item to lists
-        item_list.append(item_name)
+        ingredient_list.append(ingredient_name)
 
     expense_frame = pandas.DataFrame(variable_dict)
-    expense_frame = expense_frame.set_index('Item')
+    expense_frame = expense_frame.set_index('Ingredient')
 
     # Calculate cost of each component
     expense_frame['Cost'] = expense_frame['Recipe Amount'] * expense_frame['Price']
