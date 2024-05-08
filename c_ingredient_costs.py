@@ -153,7 +153,8 @@ def get_expenses(var_fixed):
 # *** Main Routine starts here ***
 
 # Get product name
-recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank. ")
+recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank.")
+serving_size = num_check("Serving size: ", "The serving size can't be blank and must be an integer. ", int)
 
 variable_expenses = get_expenses("variable")
 variable_frame = variable_expenses[0]
@@ -162,7 +163,7 @@ variable_sub = variable_expenses[1]
 # *** Printing Area ***
 
 print()
-recipe_heading = "**** Recipe -- {} -- ****".format(recipe_name)
+recipe_heading = "**** Recipe -- {} -- serves {} -- ****".format(recipe_name, serving_size)
 print(recipe_heading)
 print()
 print(variable_frame)
