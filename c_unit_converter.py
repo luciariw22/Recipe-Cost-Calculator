@@ -1,46 +1,36 @@
 def yes_no(question):
     to_check = ["yes", "no"]
-
     valid = False
     while not valid:
-
         response = input(question).lower()
-
         for var_item in to_check:
             if response == var_item:
                 return response
             elif response == var_item[0]:
                 return var_item
-
         print("Please enter either yes or no...\n")
 
 
 def measurement(question):
     error = "Please enter a valid measurement\n"
     valid = False
-
     while not valid:
         response = input(question).lower()
         if response == "xxx":
             return None
-
         if response.endswith('kg'):
             print("Amount:", response)
             unit_type = "kg"
-
         elif response.endswith('g'):
-            # Check if the substring before 'g' is numeric
             if response[:-1].isdigit():
                 print("Amount:", response)
                 unit_type = "g"
             else:
                 print(error)
                 continue
-
         elif response.endswith('ml'):
             print("Amount:", response)
             unit_type = "ml"
-
         else:
             unit_type = response
 
@@ -62,19 +52,26 @@ def measurement(question):
             continue
 
         if unit_type == response:
-            # If no unit is entered, return the amount directly
             return amount
 
         if unit_type == "g" or unit_type == "kg" or unit_type == "ml":
             return amount
 
 
-def unit_converter():
-    valid = False
-
-    while not valid:
-        if unit_type = "kg"
+def unit_converter(amount, unit_type):
+    if unit_type == "kg":
         converted_amount = amount * 1000
+        return converted_amount
+    elif unit_type == "g":
+        converted_amount = amount
+        return amount
+    elif unit_type == "ml":
+        converted_amount = amount * 1000
+        # Add conversion logic for milliliters here if needed
+        return converted_amount
+    else:
+        # Handle other unit types here
+        return amount
 
 
 # Main routine goes here
@@ -86,4 +83,5 @@ while True:
         break
     print("Ingredient amount:", ingredient_amount)
 
-    print(converted_amount)
+    converted_amount = unit_converter(ingredient_amount, "g")
+    print("Converted amount:", converted_amount)
