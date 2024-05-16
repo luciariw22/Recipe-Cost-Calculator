@@ -14,48 +14,54 @@ def yes_no(question):
 def measurement(question):
     error = "Please enter a valid measurement\n"
     valid = False
+
     while not valid:
         response = input(question).lower()
         if response == "xxx":
-            return None, None
+            return None
+
         if response.endswith('kg'):
-            original_amount = response
+            print("Amount:", response)
+            unit_type = "kg"
             converted_amount = float(response[:-2]) * 1000
-            print("Amount:", original_amount)
-            print("Converted amount:", original_amount, "g")
-            return original_amount, converted_amount
+
         elif response.endswith('g'):
             if response[:-1].isdigit():
                 print("Amount:", response)
-                return response, float(response[:-1])
+                unit_type = "g"
+                converted_amount = float(response[:-1])
             else:
                 print(error)
                 continue
+
         elif response.endswith('ml'):
             print("Amount:", response)
-            return float(response[:-2]), None
+            unit_type = "ml"
+            converted_amount = float(response[:-2])
+
         else:
-            try:
-                amount = float(response)
-                if amount <= 0:
-                    print("Please enter a valid amount")
-                    continue
-                else:
-                    valid = True
-            except ValueError:
-                print(error)
+            unit_type = response
+            converted_amount = float(response)
+
+        try:
+            if converted_amount <= 0:
+                print("Please enter a valid amount")
                 continue
-            print("Amount:", amount, response)
-            return amount, None
+            else:
+                valid = True
+        except ValueError:
+            print(error)
+            continue
+
+        return converted_amount
 
 
 # Main routine goes here
 
 while True:
-    original_amount, converted_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
-                                                    "enter number with no unit): ")
-    if original_amount is None:
+    converted_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
+                                   "enter number with no unit): ")
+    if converted_amount is None:
         break
-    print("Original ingredient amount:", original_amount)
-    if converted_amount is not None:
-        print("Converted amount:", converted_amount)
+    print("Converted amount:", converted_amount, "g")  # No need to separately calculate converted_amount
+
