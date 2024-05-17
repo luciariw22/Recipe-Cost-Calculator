@@ -45,7 +45,6 @@ def measurement(question):
             unit_type = "kg"
 
         elif response.endswith('g'):
-            # Check if the substring before 'g' is numeric
             if response[:-1].isdigit():
                 print("Amount:", response)
                 unit_type = "g"
@@ -78,11 +77,11 @@ def measurement(question):
             continue
 
         if unit_type == response:
+            print("Amount:", response)
             # If no unit is entered, return the amount directly
-            return amount
+            return amount, None
 
-        if unit_type == "g" or unit_type == "kg" or unit_type == "ml":
-            return amount
+        return amount, unit_type
 
 
 # currency formatting function
@@ -118,11 +117,20 @@ def get_expenses(var_fixed):
         if ingredient_name.lower() == "xxx":
             break
 
-        store_amount = measurement("Amount ingredient is bought in from store?: ")
+        store_amount, unit = measurement("Amount ingredient is bought in from store?: ")  # Fix here
         store_amount_list.append(store_amount)
 
-        amount = measurement("Recipe Amount: ")
+        amount, unit = measurement("Recipe Amount: ")  # Fix here
         amount_list.append(amount)
+
+        if unit == "kg":
+            converted_amount = amount * 1000
+        elif unit == "ml":
+            converted_amount = amount
+        else:
+            converted_amount = amount
+
+        print("Converted amount:", converted_amount, "g" if unit is not None else "")
 
         price = num_check("How much for a single item? $",
                           "The price must be a number <more "
