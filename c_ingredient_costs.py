@@ -31,7 +31,7 @@ def not_blank(question, error):
         return response
 
 
-def measurement(question):
+def measurement(question, error):
     error = "Please enter a valid measurement\n"
     valid = False
 
@@ -117,10 +117,11 @@ def get_expenses(var_fixed):
         if ingredient_name.lower() == "xxx":
             break
 
-        store_amount, unit = measurement("Amount ingredient is bought in from store?: ")  # Fix here
+        store_amount, unit = measurement("Amount ingredient is bought in from store?: ",
+                                         "Please enter a valid measurement")
         store_amount_list.append(store_amount)
 
-        amount, unit = measurement("Recipe Amount: ")  # Fix here
+        amount, unit = measurement("Recipe Amount: ", "Please enter a valid measurement")
         amount_list.append(amount)
 
         if unit == "kg":
