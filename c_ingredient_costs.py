@@ -91,7 +91,7 @@ def currency(x):
 
 # gets expenses, returns list which has
 # the data frame and subtotal
-def get_expenses(var_fixed):
+def get_ingredient_costs():
     # Set up dictionaries and lists
     ingredient_list = []
     store_amount_list = []
@@ -117,9 +117,17 @@ def get_expenses(var_fixed):
         if ingredient_name.lower() == "xxx":
             break
 
-        store_amount, unit = measurement("Amount ingredient is bought in from store?: ",
-                                         "Please enter a valid measurement")
+        store_amount, store_unit = measurement("Amount ingredient is bought in from store?: ",
+                                               "Please enter a valid measurement")
         store_amount_list.append(store_amount)
+        if store_unit == "kg":
+            store_converted_amount = store_amount * 1000
+        elif store_unit == "ml":
+            store_converted_amount = store_amount
+        else:
+            store_converted_amount = store_amount
+
+        print("Converted store amount:", store_converted_amount, "g" if store_unit is not None else "")
 
         amount, unit = measurement("Recipe Amount: ", "Please enter a valid measurement")
         amount_list.append(amount)
@@ -131,7 +139,7 @@ def get_expenses(var_fixed):
         else:
             converted_amount = amount
 
-        print("Converted amount:", converted_amount, "g" if unit is not None else "")
+        print("Converted recipe amount:", converted_amount, "g" if unit is not None else "")
 
         price = num_check("How much for a single item? $",
                           "The price must be a number <more "
@@ -146,7 +154,7 @@ def get_expenses(var_fixed):
     expense_frame = expense_frame.set_index('Ingredient')
 
     # Calculate cost of each component
-    expense_frame['Cost'] = expense_frame['Recipe Amount'] * expense_frame['Price']
+    expense_frame['Cost'] = expense_frame['Price'] / store_converted_amount * converted_amount
 
     # Find sub-total
     sub_total = expense_frame['Cost'].sum()
@@ -165,7 +173,7 @@ def get_expenses(var_fixed):
 recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank.")
 serving_size = num_check("Serving size: ", "The serving size can't be blank and must be an integer. ", int)
 
-variable_expenses = get_expenses("variable")
+variable_expenses = get_ingredient_costs()
 variable_frame = variable_expenses[0]
 variable_sub = variable_expenses[1]
 
