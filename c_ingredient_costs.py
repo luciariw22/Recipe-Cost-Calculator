@@ -78,7 +78,7 @@ def measurement(question, error):
 
         if unit_type == response:
             print("Amount:", response)
-            # If no unit is entered, return the amount directly
+
             return amount, None
 
         return amount, unit_type
@@ -89,7 +89,6 @@ def currency(x):
     return "${:.2f}".format(x)
 
 
-# gets expenses, returns list which has
 # the data frame and subtotal
 def get_ingredient_costs():
     # Set up dictionaries and lists
@@ -155,11 +154,13 @@ def get_ingredient_costs():
 
     # Calculate cost of each component
     expense_frame['Cost'] = expense_frame['Price'] / store_converted_amount * converted_amount
+    total_cost = expense_frame['Cost'].sum()
+    expense_frame['Cost per serving'] = total_cost / serving_size
 
     # Find sub-total
     sub_total = expense_frame['Cost'].sum()
 
-    # Currency formatting (uses currency function)
+    # Currency formatting
     add_dollars = ['Price', 'Cost']
     for item in add_dollars:
         expense_frame[item] = expense_frame[item].apply(currency)
@@ -181,7 +182,10 @@ variable_sub = variable_expenses[1]
 
 print()
 recipe_heading = "**** Recipe -- {} -- serves {} -- ****".format(recipe_name, serving_size)
+cost_per_serv_heading = "**** Cost per serving ****"
 print(recipe_heading)
 print()
 print(variable_frame)
 print()
+print(cost_per_serv_heading)
+
