@@ -182,10 +182,17 @@ variable_sub = variable_expenses[1]
 
 print()
 recipe_heading = "**** Recipe -- {} -- serves {} -- ****".format(recipe_name, serving_size)
-cost_per_serv_heading = "**** Cost per serving ****"
 print(recipe_heading)
 print()
-print(variable_frame)
+print(variable_frame.drop(columns=['Cost', 'Cost per serving']))  # Remove 'Cost per serving' columns from
+# the variable_frame
 print()
+
+cost_per_serv_heading = "**** Cost per serving ****"
 print(cost_per_serv_heading)
+print()
+print("${:.2f} per serving".format(variable_sub))
+
+
+
 
