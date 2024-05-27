@@ -96,12 +96,14 @@ def get_ingredient_costs():
     store_amount_list = []
     amount_list = []
     price_list = []
+    cost_list = []  # Add a new list to store the cost of each ingredient
 
     variable_dict = {
         "Ingredient": ingredient_list,
         "Store Amount": store_amount_list,
         "Recipe Amount": amount_list,
-        "Price": price_list
+        "Price": price_list,
+        "Cost": cost_list  # Add the cost list to the variable dictionary
     }
 
     # loop to get ingredient, amount, and price
@@ -146,20 +148,22 @@ def get_ingredient_costs():
                           float)
         price_list.append(price)
 
+        # Calculate cost for the current ingredient
+        cost = price / store_converted_amount * converted_amount
+        cost_list.append(cost)
+
         # add item to lists
         ingredient_list.append(ingredient_name)
 
     expense_frame = pandas.DataFrame(variable_dict)
     expense_frame = expense_frame.set_index('Ingredient')
 
-    # Calculate cost of each component
-    expense_frame['Cost'] = expense_frame['Price'] / store_converted_amount * converted_amount
-    total_cost = expense_frame['Cost'].sum()
-    expense_frame['Total Cost'] = total_cost
-    expense_frame['Cost per serving'] = total_cost / serving_size
-
     # Find sub-total
     sub_total = expense_frame['Cost'].sum()
+
+    # Calculate cost per serving
+    expense_frame['Total Cost'] = sub_total
+    expense_frame['Cost per serving'] = sub_total / serving_size
 
     # Currency formatting
     add_dollars = ['Price', 'Cost']
@@ -189,15 +193,10 @@ print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove
 # the variable_frame
 print()
 
-cost_per_serv_heading = "**** Total Costs ****"
+cost_per_serv_heading = "**** Cost per Serving ****"
 print(cost_per_serv_heading)
 print()
 print("Total cost: ${:.2f}".format(variable_sub))
 print()
-print("Costs ${:.2f} per serving".format(variable_sub))
-
-
-
-
-
-
+print("Cost per serving: ${:.2f}".format(variable_sub / serving_size))
+print()
