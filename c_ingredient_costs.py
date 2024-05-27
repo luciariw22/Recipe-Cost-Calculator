@@ -155,6 +155,7 @@ def get_ingredient_costs():
     # Calculate cost of each component
     expense_frame['Cost'] = expense_frame['Price'] / store_converted_amount * converted_amount
     total_cost = expense_frame['Cost'].sum()
+    expense_frame['Total Cost'] = total_cost
     expense_frame['Cost per serving'] = total_cost / serving_size
 
     # Find sub-total
@@ -181,17 +182,19 @@ variable_sub = variable_expenses[1]
 # *** Printing Area ***
 
 print()
-recipe_heading = "**** Recipe -- {} -- serves {} -- ****".format(recipe_name, serving_size)
+recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
 print(recipe_heading)
 print()
-print(variable_frame.drop(columns=['Cost per serving']))  # Remove 'Cost per serving' columns from
+print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove 'Cost per serving' columns from
 # the variable_frame
 print()
 
-cost_per_serv_heading = "**** Cost per serving ****"
+cost_per_serv_heading = "**** Total Costs ****"
 print(cost_per_serv_heading)
 print()
-print("${:.2f} per serving".format(variable_sub))
+print("Total cost: ${:.2f}".format(variable_sub))
+print()
+print("Costs ${:.2f} per serving".format(variable_sub))
 
 
 
