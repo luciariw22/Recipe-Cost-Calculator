@@ -103,7 +103,7 @@ def get_ingredient_costs():
         "Store Amount": store_amount_list,
         "Recipe Amount": amount_list,
         "Price": price_list,
-        "Cost": cost_list  # Add the cost list to the variable dictionary
+        "Cost": cost_list
     }
 
     # loop to get ingredient, amount, and price
@@ -177,7 +177,7 @@ def get_ingredient_costs():
 
 # Get product name
 recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank.")
-serving_size = num_check("Serving size: ", "The serving size can't be blank and must be an integer. ", int)
+serving_size = num_check("Serving size: ", "The serving size can't be blank and must be a whole integer higher than 0. ", int)
 
 variable_expenses = get_ingredient_costs()
 variable_frame = variable_expenses[0]
@@ -189,8 +189,7 @@ print()
 recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
 print(recipe_heading)
 print()
-print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove 'Cost per serving' columns from
-# the variable_frame
+print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
 print()
 
 cost_per_serv_heading = "**** Cost per Serving ****"
