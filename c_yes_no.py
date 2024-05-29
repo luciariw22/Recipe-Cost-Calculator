@@ -1,5 +1,4 @@
 def yes_no(question):
-
     to_check = ["yes", "no"]
 
     valid = False
@@ -17,6 +16,6 @@ def yes_no(question):
 
 
 # Loops to make testing faster...
-for item in range(0,6):
-    want_help = yes_no("Do you want to read the instructions? ")
+for item in range(0, 6):
+    want_help = yes_no("Do you want to read the instructions?: ")
     print("You said '{}'\n".format(want_help))
