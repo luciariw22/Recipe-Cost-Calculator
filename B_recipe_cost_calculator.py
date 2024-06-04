@@ -124,7 +124,7 @@ def get_ingredient_costs():
     store_amount_list = []
     amount_list = []
     price_list = []
-    cost_list = []  # Add a new list to store the cost of each ingredient
+    cost_list = []
 
     variable_dict = {
         "Ingredient": ingredient_list,
@@ -140,7 +140,7 @@ def get_ingredient_costs():
 
         print()
         # get name, store amount, amount, and price
-        ingredient_name = not_blank("Ingredient name: ",
+        ingredient_name = not_blank("Ingredient name: (or enter 'xxx' when done)",
                                     "The ingredient name can't be "
                                     "blank.")
         if ingredient_name.lower() == "xxx":
@@ -170,7 +170,7 @@ def get_ingredient_costs():
 
         print("Converted recipe amount:", converted_amount, "g" if unit is not None else "")
 
-        price = num_check("How much for a single item? $",
+        price = num_check("Cost to buy ingredient?: $",
                           "The price must be a number <more "
                           "than 0>",
                           float)
@@ -201,7 +201,7 @@ def get_ingredient_costs():
     return [expense_frame, sub_total]
 
 
-# *** Main Routine starts here ***
+# ======== Main Routine starts here ========
 
 # Ask user if they want to see the instructions
 want_instructions = yes_no("Do you want to see the instructions?")
@@ -210,7 +210,7 @@ if want_instructions == "yes":
     instructions()
 
 # Get product name
-recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank.")
+recipe_name = not_blank("\nRecipe name: ", "The Recipe name can't be blank.")
 serving_size = num_check("Serving size: ",
                          "The serving size can't be blank and must be a whole integer higher than 0. ", int)
 
