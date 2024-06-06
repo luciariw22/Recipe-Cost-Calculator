@@ -134,16 +134,21 @@ def get_ingredient_costs():
         "Cost": cost_list
     }
 
-    # loop to get ingredient, amount, and price
+    # loop to get all ingredients
     ingredient_name = ""
     while ingredient_name.lower() != "xxx":
 
         print()
-        # get name, store amount, amount, and price
+        # get name, store amount, recipe amount, and price
         ingredient_name = not_blank("Ingredient name: (or enter 'xxx' when done)",
                                     "The ingredient name can't be "
                                     "blank.")
+
         if ingredient_name.lower() == "xxx":
+            if not ingredient_list:
+                print("\n == No ingredients for recipe entered. Exiting program... ==")
+                return None
+
             break
 
         store_amount, store_unit = measurement("Amount ingredient is bought in from store?: ",
@@ -183,6 +188,9 @@ def get_ingredient_costs():
         # add item to lists
         ingredient_list.append(ingredient_name)
 
+    if not ingredient_list:  # Check if no ingredients were entered
+        return None
+
     expense_frame = pandas.DataFrame(variable_dict)
     expense_frame = expense_frame.set_index('Ingredient')
 
@@ -215,23 +223,26 @@ serving_size = num_check("Serving size: ",
                          "The serving size can't be blank and must be a whole integer higher than 0. ", int)
 
 variable_expenses = get_ingredient_costs()
-variable_frame = variable_expenses[0]
-variable_sub = variable_expenses[1]
 
-# *** Printing Area ***
+if variable_expenses is not None:  # Check if ingredients were entered
+    variable_frame = variable_expenses[0]
+    variable_sub = variable_expenses[1]
 
-print()
-recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
-print(recipe_heading)
-print()
-print(
-    variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
-print()
+    # *** Printing Area ***
 
-cost_per_serv_heading = "**** Cost per Serving ****"
-print(cost_per_serv_heading)
-print()
-print("Total cost: ${:.2f}".format(variable_sub))
-print()
-print("Cost per serving: ${:.2f}".format(variable_sub / serving_size))
-print()
+    print()
+    recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
+    print(recipe_heading)
+    print()
+    print(
+        variable_frame.drop(
+            columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
+    print()
+
+    cost_per_serv_heading = "**** Cost per Serving ****"
+    print(cost_per_serv_heading)
+    print()
+    print("Total cost: ${:.2f}".format(variable_sub))
+    print()
+    print("Cost per serving: ${:.2f}".format(variable_sub / serving_size))
+    print()
