@@ -211,6 +211,10 @@ def get_ingredient_costs():
 
 # ======== Main Routine starts here ========
 
+print("============================================\n"
+      "==  Welcome to the Recipe Cost Calculator == \n"
+      "============================================\n")
+
 # Ask user if they want to see the instructions
 want_instructions = yes_no("Do you want to see the instructions?")
 
