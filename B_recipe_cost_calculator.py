@@ -146,7 +146,7 @@ def get_ingredient_costs():
 
         if ingredient_name.lower() == "xxx":
             if not ingredient_list:
-                print("\n == No ingredients for recipe entered. Exiting program... ==")
+                print("\nNo ingredients for recipe entered. Exiting program... ")
                 return None
 
             break
