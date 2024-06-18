@@ -67,7 +67,8 @@ def measurement(question):
 while True:
     ingredient_amount, unit = measurement("\nAmount of ingredient needed for recipe?: (e.g., 2kg, 200g, "
                                           "20mL, or enter number with no unit): ")
-    if ingredient_amount is None:
+
+    if ingredient_amount == "xxx":
         break
 
     if unit == "kg":
