@@ -14,9 +14,9 @@ def measurement(question):
     valid = False
 
     while not valid:
-        response = input(question).lower()
+        response = input(question).strip().lower()
         if response == "xxx":
-            return None
+            return "xxx", None  # Return special indicator for break
 
         if response.endswith('kg'):
             print("Amount:", response)
@@ -31,17 +31,23 @@ def measurement(question):
                 continue
 
         elif response.endswith('ml'):
-            print("Amount:", response)
-            unit_type = "ml"
+            if response[:-2].isdigit():
+                print("Amount:", response)
+                unit_type = "ml"
+            else:
+                print(error)
+                continue
 
         else:
-            unit_type = response
+            unit_type = None  # Handle the case where there's no unit provided
 
         try:
             if unit_type == "g":
                 amount = float(response[:-1])
-            elif unit_type == "kg" or unit_type == "ml":
-                amount = float(response[:-2])
+            elif unit_type == "kg":
+                amount = float(response[:-2]) * 1000  # Convert kg to g
+            elif unit_type == "ml":
+                amount = float(response[:-2])  # Keep ml as is
             else:
                 amount = float(response)
 
@@ -54,11 +60,7 @@ def measurement(question):
             print(error)
             continue
 
-        if unit_type == response:
-            print("Amount:", response)
-            # If no unit is entered, return the amount directly
-            return amount, None
-
+        # Return amount and unit_type separately
         return amount, unit_type
 
 
