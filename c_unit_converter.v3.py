@@ -45,9 +45,9 @@ def measurement(question):
             if unit_type == "g":
                 amount = float(response[:-1])
             elif unit_type == "kg":
-                amount = float(response[:-2]) * 1000  # Convert kg to g
+                amount = float(response[:-2])
             elif unit_type == "ml":
-                amount = float(response[:-2])  # Keep ml as is
+                amount = float(response[:-2])
             else:
                 amount = float(response)
 
