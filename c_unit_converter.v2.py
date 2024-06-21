@@ -60,8 +60,8 @@ def measurement(question):
 
 while True:
     converted_amount = measurement("\nAmount of ingredient?: (e.g., 2kg, 200g, 20mL, or "
-                                   "enter number with no unit): ")
+                                   "enter number with no unit):")
     if converted_amount is None:
         break
-    print("Converted amount:", converted_amount, "g")  # No need to separately calculate converted_amount
+    print("Converted amount:", converted_amount, "g")
 
