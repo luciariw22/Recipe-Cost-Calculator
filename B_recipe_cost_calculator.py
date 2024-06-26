@@ -175,7 +175,7 @@ def get_ingredient_costs():
 
         print("Converted recipe amount:", converted_amount, "g" if unit is not None else "")
 
-        price = num_check("Cost to buy ingredient?: $",
+        price = num_check("Price of ingredient?: $",
                           "The price must be a number <more "
                           "than 0>",
                           float)
@@ -188,7 +188,7 @@ def get_ingredient_costs():
         # add item to lists
         ingredient_list.append(ingredient_name)
 
-    if not ingredient_list:  # Check if no ingredients were entered
+    if not ingredient_list:
         return None
 
     expense_frame = pandas.DataFrame(variable_dict)
@@ -228,7 +228,7 @@ serving_size = num_check("Serving size: ",
 
 variable_expenses = get_ingredient_costs()
 
-if variable_expenses is not None:  # Check if ingredients were entered
+if variable_expenses is not None:
     variable_frame = variable_expenses[0]
     variable_sub = variable_expenses[1]
 
