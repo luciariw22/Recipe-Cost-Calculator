@@ -5,37 +5,29 @@ def num_check(question, error, num_type):
     valid = False
 
     while not valid:
-
         try:
             response = num_type(input(question))
 
             if response <= 0:
                 print(error)
-
             else:
                 return response
-
         except ValueError:
             print(error)
 
 
 def not_blank(question, error):
-    valid = False
-    while not valid:
+    while True:
         response = input(question)
-
-        if response == "":
+        if response.strip() == "":
             print("{}. \nPlease try again.\n".format(error))
-            continue
-
-        return response
+        else:
+            return response
 
 
 def measurement(question, error):
     error = "Please enter a valid measurement\n"
-    valid = False
-
-    while not valid:
+    while True:
         response = input(question).lower()
         if response == "xxx":
             return None
@@ -43,7 +35,6 @@ def measurement(question, error):
         if response.endswith('kg'):
             print("Amount:", response)
             unit_type = "kg"
-
         elif response.endswith('g'):
             if response[:-1].isdigit():
                 print("Amount:", response)
@@ -51,11 +42,9 @@ def measurement(question, error):
             else:
                 print(error)
                 continue
-
         elif response.endswith('ml'):
             print("Amount:", response)
             unit_type = "ml"
-
         else:
             unit_type = response
 
@@ -71,17 +60,10 @@ def measurement(question, error):
                 print("Please enter a valid amount")
                 continue
             else:
-                valid = True
+                return amount, unit_type
+
         except ValueError:
             print(error)
-            continue
-
-        if unit_type == response:
-            print("Amount:", response)
-
-            return amount, None
-
-        return amount, unit_type
 
 
 # currency formatting function
@@ -91,12 +73,11 @@ def currency(x):
 
 # the data frame and subtotal
 def get_ingredient_costs():
-    # Set up dictionaries and lists
     ingredient_list = []
     store_amount_list = []
     amount_list = []
     price_list = []
-    cost_list = []  # Add a new list to store the cost of each ingredient
+    cost_list = []
 
     variable_dict = {
         "Ingredient": ingredient_list,
@@ -106,16 +87,18 @@ def get_ingredient_costs():
         "Cost": cost_list
     }
 
-    # loop to get ingredient, amount, and price
     ingredient_name = ""
     while ingredient_name.lower() != "xxx":
-
         print()
-        # get name, store amount, amount, and price
         ingredient_name = not_blank("Ingredient name: ",
                                     "The ingredient name can't be "
                                     "blank.")
+
         if ingredient_name.lower() == "xxx":
+            if not ingredient_list:
+                print("\nNo ingredients for recipe entered. Exiting program... ")
+                return None, None  # Return None values to indicate no ingredients entered
+
             break
 
         store_amount, store_unit = measurement("Amount ingredient is bought in from store?: ",
@@ -142,60 +125,53 @@ def get_ingredient_costs():
 
         print("Converted recipe amount:", converted_amount, "g" if unit is not None else "")
 
-        price = num_check("How much for a single item? $",
+        price = num_check("Price of ingredient? $",
                           "The price must be a number <more "
                           "than 0>",
                           float)
         price_list.append(price)
 
-        # Calculate cost for the current ingredient
         cost = price / store_converted_amount * converted_amount
         cost_list.append(cost)
 
-        # add item to lists
         ingredient_list.append(ingredient_name)
+
+    if not ingredient_list:
+        print("\nNo ingredients for recipe entered. Exiting program... ")
+        return None, None  # Return None values to indicate no ingredients entered
 
     expense_frame = pandas.DataFrame(variable_dict)
     expense_frame = expense_frame.set_index('Ingredient')
 
-    # Find sub-total
     sub_total = expense_frame['Cost'].sum()
 
-    # Calculate cost per serving
     expense_frame['Total Cost'] = sub_total
-    expense_frame['Cost per serving'] = sub_total / serving_size
 
-    # Currency formatting
-    add_dollars = ['Price', 'Cost']
-    for item in add_dollars:
-        expense_frame[item] = expense_frame[item].apply(currency)
-
-    return [expense_frame, sub_total]
+    return expense_frame, sub_total
 
 
 # *** Main Routine starts here ***
 
-# Get product name
 recipe_name = not_blank("Recipe name: ", "The Recipe name can't be blank.")
 serving_size = num_check("Serving size: ", "The serving size can't be blank and must be a whole integer higher than 0. ", int)
 
-variable_expenses = get_ingredient_costs()
-variable_frame = variable_expenses[0]
-variable_sub = variable_expenses[1]
+variable_expenses, variable_sub = get_ingredient_costs()
 
-# *** Printing Area ***
+if variable_expenses is not None:
+    variable_frame = variable_expenses
 
-print()
-recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
-print(recipe_heading)
-print()
-print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
-print()
+    print()
+    recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
+    print(recipe_heading)
+    print()
+    print(variable_frame.drop(columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
+    print()
 
-cost_per_serv_heading = "**** Cost per Serving ****"
-print(cost_per_serv_heading)
-print()
-print("Total cost: ${:.2f}".format(variable_sub))
-print()
-print("Cost per serving: ${:.2f}".format(variable_sub / serving_size))
-print()
+    cost_per_serv_heading = "**** Cost per Serving ****"
+    print(cost_per_serv_heading)
+    print()
+    print("Total cost: ${:.2f}".format(variable_sub))
+    print()
+    print("Cost per serving: ${:.2f}".format(variable_sub / serving_size))
+    print()
+
