@@ -4,7 +4,8 @@ import pandas
 # prints instructions
 def instructions():
     print()
-    print("instructions go here...")
+    print("***** INSTRUCTIONS *****\n"
+          "Use this program to calculate the costs for different serving amounts and to help make your favourite recipes!")
     print()
 
 
