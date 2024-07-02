@@ -4,8 +4,12 @@ import pandas
 # prints instructions
 def instructions():
     print()
-    print("***** INSTRUCTIONS *****\n"
-          "Use this program to calculate the costs for different serving amounts and to help make your favourite recipes!")
+    print("***** INSTRUCTIONS *****")
+    print()
+    print("Use this program to calculate the costs for different serving amounts and to help make your favourite recipes!\n"
+          "To use the calculator, simply enter the name and serving size wanted for recipe, and then\n"
+          "enter all ingredients along with their costs and amounts.\n"
+          "Get your data showed to you at the end with all the costs and prices worked out, and enjoy cooking/baking!")
     print()
 
 
