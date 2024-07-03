@@ -158,6 +158,7 @@ def get_ingredient_costs():
 
         store_amount, store_unit = measurement("Amount ingredient is bought in from store?: ",
                                                "Please enter a valid measurement")
+        # Converts store amounts into grams
         store_amount_list.append(store_amount)
         if store_unit == "kg":
             store_converted_amount = store_amount * 1000
