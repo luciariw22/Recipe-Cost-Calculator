@@ -14,7 +14,7 @@ def instructions():
     print()
 
 
-# yes / no checker
+# yes / no checker for instructions
 def yes_no(question):
     to_check = ["yes", "no"]
 
@@ -23,6 +23,7 @@ def yes_no(question):
 
         response = input(question).lower()
 
+        # uses var_item to check for yes / no, returns response
         for var_item in to_check:
             if response == var_item:
                 return response
@@ -32,7 +33,7 @@ def yes_no(question):
         print("Please enter either yes or no...\n")
 
 
-# number checker
+# checks for integers, ensures they higher than zero
 def num_check(question, error, num_type):
     valid = False
 
@@ -40,7 +41,7 @@ def num_check(question, error, num_type):
 
         try:
             response = num_type(input(question))
-
+            # if response 0 or lower, error
             if response <= 0:
                 print(error)
 
@@ -64,8 +65,8 @@ def not_blank(question, error):
         return response
 
 
-# gets unit of amounts
-def measurement(question, error):
+# gets amount of ingredient and unit amount, returns both
+def measurement(question, _error):
     error = "Please enter a valid measurement\n"
     valid = False
 
@@ -73,7 +74,7 @@ def measurement(question, error):
         response = input(question).lower()
         if response == "xxx":
             return None
-
+        # uses endswith to get unit amounts for amount entered
         if response.endswith('kg'):
             print("Amount:", response)
             unit_type = "kg"
@@ -89,10 +90,10 @@ def measurement(question, error):
         elif response.endswith('ml'):
             print("Amount:", response)
             unit_type = "ml"
-
+        # if not unit entered, amount is whole (eg. eggs)
         else:
             unit_type = response
-
+        # gets the unit separately so we can convert later on
         try:
             if unit_type == "g":
                 amount = float(response[:-1])
@@ -106,10 +107,11 @@ def measurement(question, error):
                 continue
             else:
                 valid = True
+
         except ValueError:
             print(error)
             continue
-
+        # prints user response
         if unit_type == response:
             print("Amount:", response)
 
@@ -149,7 +151,7 @@ def get_ingredient_costs():
         ingredient_name = not_blank("Ingredient name: (or enter 'xxx' when done)",
                                     "The ingredient name can't be "
                                     "blank.")
-
+        # breaks program with or without ingredients being entered prior
         if ingredient_name.lower() == "xxx":
             if not ingredient_list:
                 print("\nNo ingredients for recipe entered. Exiting program... ")
@@ -168,13 +170,13 @@ def get_ingredient_costs():
             store_converted_amount = store_amount
         else:
             store_converted_amount = store_amount
-
+        # prints converted store amount for user
         print("Converted store amount:", store_converted_amount, "g" if store_unit is not None else "")
 
         amount, unit = measurement("\nRecipe Amount? (with measurement unit if has one): ",
                                    "Please enter a valid measurement")
         amount_list.append(amount)
-
+        # gets converted recipe amount and prints
         if unit == "kg":
             converted_amount = amount * 1000
         elif unit == "ml":
@@ -183,7 +185,7 @@ def get_ingredient_costs():
             converted_amount = amount
 
         print("Converted recipe amount:", converted_amount, "g" if unit is not None else "")
-
+        # get price of ingredients for calculations later on
         price = num_check("Price of ingredient?: $",
                           "The price must be a number <more "
                           "than 0>",
@@ -196,7 +198,7 @@ def get_ingredient_costs():
 
         # add item to lists
         ingredient_list.append(ingredient_name)
-
+    # if no ingredients entered, variable frame doesn't print
     if not ingredient_list:
         return None
 
@@ -214,7 +216,7 @@ def get_ingredient_costs():
     add_dollars = ['Price', 'Cost']
     for item in add_dollars:
         expense_frame[item] = expense_frame[item].apply(currency)
-
+    # returns frame
     return [expense_frame, sub_total]
 
 
@@ -231,7 +233,7 @@ want_instructions = yes_no("Do you want to see the instructions?")
 if want_instructions == "yes":
     instructions()
 
-# Get product name
+# Get product name and serving amount
 recipe_name = not_blank("\nRecipe name: ", "The Recipe name can't be blank.")
 serving_size = num_check("\nServing size: ",
                          "The serving size can't be blank and must be a whole integer higher than 0. ", int)
@@ -245,14 +247,14 @@ if variable_expenses is not None:
     # *** Printing Area ***
 
     print()
-    recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)
+    recipe_heading = "***** -- {} Recipe -- serves {} -- *****".format(recipe_name, serving_size)  # prints heading and inserts user inputs in blanks
     print(recipe_heading)
     print()
     print(
         variable_frame.drop(
-            columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
+            columns=['Cost per serving', 'Total Cost']))  # Removes total cost columns from main frame for their own section
     print()
-
+    # prints total costs
     cost_per_serv_heading = "**** Total Costs ****"
     print(cost_per_serv_heading)
     print()
