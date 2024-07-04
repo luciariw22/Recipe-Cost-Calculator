@@ -6,10 +6,11 @@ def instructions():
     print()
     print("***** INSTRUCTIONS *****")
     print()
-    print("Use this program to calculate the costs for different serving amounts and to help make your favourite recipes!\n"
-          "To use the calculator, simply enter the name and serving size wanted for recipe, and then\n"
-          "enter all ingredients along with their costs and amounts.\n"
-          "Get your data showed to you at the end with all the costs and prices worked out, and enjoy cooking/baking!")
+    print(
+        "Use this program to calculate the costs for different serving amounts and to help make your favourite recipes!\n"
+        "To use the calculator, simply enter the name and serving size wanted for recipe, and then\n"
+        "enter all ingredients along with their costs and amounts.\n"
+        "Get your data showed to you at the end with all the costs and prices worked out, and enjoy cooking/baking!")
     print()
 
 
@@ -57,7 +58,7 @@ def not_blank(question, error):
         response = input(question)
 
         if response == "":
-            print("{}. \nPlease try again.\n".format(error))
+            print("{}. \nPlease try again.".format(error))
             continue
 
         return response
@@ -156,8 +157,9 @@ def get_ingredient_costs():
 
             break
 
-        store_amount, store_unit = measurement("Amount ingredient is bought in from store?: ",
-                                               "Please enter a valid measurement")
+        store_amount, store_unit = measurement(
+            "Amount ingredient is bought in from store? (with measurement unit if has one): ",
+            "Please enter a valid measurement")
         # Converts store amounts into grams
         store_amount_list.append(store_amount)
         if store_unit == "kg":
@@ -169,7 +171,8 @@ def get_ingredient_costs():
 
         print("Converted store amount:", store_converted_amount, "g" if store_unit is not None else "")
 
-        amount, unit = measurement("Recipe Amount: ", "Please enter a valid measurement")
+        amount, unit = measurement("\nRecipe Amount? (with measurement unit if has one): ",
+                                   "Please enter a valid measurement")
         amount_list.append(amount)
 
         if unit == "kg":
@@ -217,6 +220,7 @@ def get_ingredient_costs():
 
 # ======== Main Routine starts here ========
 
+
 print("============================================\n"
       "==  Welcome to the Recipe Cost Calculator == \n"
       "============================================\n")
@@ -229,7 +233,7 @@ if want_instructions == "yes":
 
 # Get product name
 recipe_name = not_blank("\nRecipe name: ", "The Recipe name can't be blank.")
-serving_size = num_check("Serving size: ",
+serving_size = num_check("\nServing size: ",
                          "The serving size can't be blank and must be a whole integer higher than 0. ", int)
 
 variable_expenses = get_ingredient_costs()
@@ -249,7 +253,7 @@ if variable_expenses is not None:
             columns=['Cost per serving', 'Total Cost']))  # Remove Cost per serving columns from main frame
     print()
 
-    cost_per_serv_heading = "**** Cost per Serving ****"
+    cost_per_serv_heading = "**** Total Costs ****"
     print(cost_per_serv_heading)
     print()
     print("Total cost: ${:.2f}".format(variable_sub))
